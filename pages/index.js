@@ -18,6 +18,13 @@ function index() {
     setTasks(newTasks);
   };
 
+  const toggleTask = (index) => {
+    const newTasks = tasks.map((task, i) =>
+      i === index ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(newTasks);
+  };
+
   return (
     <>
       <div>
@@ -35,8 +42,16 @@ function index() {
           <ul>
             {tasks.map((task, index) => (
               <li key={index}>
-                {task.text}
+                <span
+                  style={{
+                    textDecoration: task.completed ? "line-through" : "none",
+                  }}
+                >
+                  {task.text}
+                </span>
+
                 <button onClick={() => deleteTask(index)}>Delete</button>
+                <button onClick={() => toggleTask(index)}>Completed</button>
               </li>
             ))}
           </ul>

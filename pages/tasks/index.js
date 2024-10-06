@@ -27,7 +27,7 @@ function index() {
 
   return (
     <>
-      <div>
+      <div style={styles.container}>
         <h1>To Do App</h1>
         <div>
           <input
@@ -39,9 +39,9 @@ function index() {
           <button onClick={addTask}>Add Task</button>
         </div>
         <div>
-          <ul>
+          <ul style={styles.taskList}>
             {tasks.map((task, index) => (
-              <li key={index}>
+              <li key={index} style={styles.taskItem}>
                 <span
                   style={{
                     textDecoration: task.completed ? "line-through" : "none",
@@ -60,5 +60,24 @@ function index() {
     </>
   );
 }
+
+const styles = {
+  container: {
+    padding: "20px",
+    maxWidth: "600px",
+    margin: "0 auto",
+    textAlign: "center",
+  },
+  taskList: {
+    listStyleType: "none",
+    padding: 0,
+  },
+  taskItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "10px 0",
+    borderBottom: "1px solid #ccc",
+  },
+};
 
 export default index;

@@ -13,6 +13,11 @@ function index() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  const deleteTask = (index) => {
+    const newTasks = tasks.filter((item, i) => i != index);
+    setTasks(newTasks);
+  };
+
   return (
     <>
       <div>
@@ -25,6 +30,16 @@ function index() {
             placeholder="Enter a new task"
           />
           <button onClick={addTask}>Add Task</button>
+        </div>
+        <div>
+          <ul>
+            {tasks.map((task, index) => (
+              <li key={index}>
+                {task.text}
+                <button onClick={() => deleteTask(index)}>Delete</button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>

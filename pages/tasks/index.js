@@ -35,9 +35,18 @@ function index() {
     setTaskInput("");
   };
 
-  const deleteTask = (index) => {
-    const newTasks = tasks.filter((item, i) => i != index);
-    setTasks(newTasks);
+  const deleteTask = async (task) => {
+    // const newTasks = tasks.filter((item, i) => i != index);
+    // setTasks(newTasks);
+    await fetch(`/api/tasks`, {
+      method: "DELETE",
+      body: JSON.stringify(task),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    fetchTasks();
   };
 
   const toggleTask = async (task) => {
@@ -85,7 +94,7 @@ function index() {
                   {task.text}
                 </span>
 
-                <button onClick={() => deleteTask(index)}>Delete</button>
+                <button onClick={() => deleteTask(task)}>Delete</button>
                 <button onClick={() => toggleTask(task)}>Completed</button>
               </li>
             ))}

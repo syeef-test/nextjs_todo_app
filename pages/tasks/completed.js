@@ -3,11 +3,24 @@ import React, { useEffect, useState } from "react";
 function CompletedTasks() {
   const [tasks, setTasks] = useState([]);
 
+  // useEffect(() => {
+  //   const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+  //   if (savedTasks) {
+  //     setTasks(savedTasks.filter((task) => task.completed));
+  //   }
+  // }, []);
+
+  const fetchTasks = async () => {
+    const response = await fetch("/api/completed_task", {
+      method: "GET",
+    });
+    const data = await response.json();
+    console.log(data);
+    setTasks(data);
+  };
+
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem("tasks"));
-    if (savedTasks) {
-      setTasks(savedTasks.filter((task) => task.completed));
-    }
+    fetchTasks();
   }, []);
 
   return (
@@ -18,8 +31,8 @@ function CompletedTasks() {
           {tasks.length === 0 ? (
             <li>No Completed Tasks</li>
           ) : (
-            tasks.map((task, index) => (
-              <li key={index} style={styles.taskItem}>
+            tasks.map((task) => (
+              <li key={task._id} style={styles.taskItem}>
                 {task.text}
               </li>
             ))

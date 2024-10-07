@@ -4,14 +4,36 @@ function index() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState("");
 
-  const addTask = () => {
-    setTasks([...tasks, { text: taskInput, completed: false }]);
-    setTaskInput("");
+  const fetchTasks = async () => {
+    const response = await fetch("/api/tasks", {
+      method: "GET",
+    });
+    const data = await response.json();
+    console.log(data);
+    setTasks(data);
   };
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    // localStorage.setItem("tasks", JSON.stringify(tasks));
+    fetchTasks();
+  }, []);
+
+  const addTask = async () => {
+    //setTasks([...tasks, { text: taskInput, completed: false }]);
+    const enteredTask = { text: taskInput, completed: false };
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      body: JSON.stringify(enteredTask),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    fetchTasks();
+    //console.log(data);
+    setTaskInput("");
+  };
 
   const deleteTask = (index) => {
     const newTasks = tasks.filter((item, i) => i != index);

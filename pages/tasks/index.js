@@ -40,11 +40,24 @@ function index() {
     setTasks(newTasks);
   };
 
-  const toggleTask = (index) => {
-    const newTasks = tasks.map((task, i) =>
-      i === index ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(newTasks);
+  const toggleTask = async (task) => {
+    // const newTasks = tasks.map((task, i) =>
+    //   i === index ? { ...task, completed: !task.completed } : task
+    // );
+    // setTasks(newTasks);
+    //console.log(index);
+
+    const updatedTask = { ...task, completed: !task.completed };
+
+    await fetch(`/api/tasks`, {
+      method: "PUT",
+      body: JSON.stringify(updatedTask),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    fetchTasks();
   };
 
   return (
@@ -62,8 +75,8 @@ function index() {
         </div>
         <div>
           <ul style={styles.taskList}>
-            {tasks.map((task, index) => (
-              <li key={index} style={styles.taskItem}>
+            {tasks.map((task) => (
+              <li key={task._id} style={styles.taskItem}>
                 <span
                   style={{
                     textDecoration: task.completed ? "line-through" : "none",
@@ -73,7 +86,7 @@ function index() {
                 </span>
 
                 <button onClick={() => deleteTask(index)}>Delete</button>
-                <button onClick={() => toggleTask(index)}>Completed</button>
+                <button onClick={() => toggleTask(task)}>Completed</button>
               </li>
             ))}
           </ul>

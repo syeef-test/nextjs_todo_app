@@ -27,14 +27,14 @@ async function handler(req, res) {
     const db = client.db();
 
     const todoCollection = db.collection("next_js_todo");
-    const result = await todoCollection.find().toArray();
+    const result = await todoCollection.find({ completed: false }).toArray();
 
     console.log(result);
     res.json(result);
 
     await client.close();
 
-    res.status(201).json({ message: "Todo Found!" });
+    // res.status(201).json({ message: "Todo Found!" });
   }
 }
 
